@@ -1,0 +1,4 @@
+# rename this file to 'application.yml' and fill settings
+mackerel:
+  apiRoot: https://api.mackerelio.com/api/v0/
+  apiKey:
