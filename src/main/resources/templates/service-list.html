@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="jp" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Service List</title>
+</head>
+<body>
+
+<h1>Service List</h1>
+
+<!--/*@thymesVar id="serviceList" type="com.ryosms.mackerel.model.ServiceList"*/-->
+<!--/*@thymesVar id="services" type="com.ryosms.mackerel.model.ServiceList$Service"*/-->
+<ul th:unless="${#lists.isEmpty(serviceList.services)}">
+    <li th:each="service:${serviceList.services}" th:inline="text">
+        <a href="#" th:href="@{|/services/${service.name}|}">[[${service.name}]]</a>
+    </li>
+</ul>
+
+</body>
+</html>
