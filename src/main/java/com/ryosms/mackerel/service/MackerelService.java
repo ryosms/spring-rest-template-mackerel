@@ -1,16 +1,21 @@
 package com.ryosms.mackerel.service;
 
 import com.ryosms.mackerel.MackerelSettings;
+import com.ryosms.mackerel.form.MetricForm;
 import com.ryosms.mackerel.model.MetricNames;
+import com.ryosms.mackerel.model.PostResult;
 import com.ryosms.mackerel.model.ServiceList;
+import com.ryosms.mackerel.model.ServiceMetric;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestOperations;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MackerelService {
@@ -49,10 +54,26 @@ public class MackerelService {
         return response.getBody();
     }
 
+    /**
+     * ServiceにMetricを投稿する
+     *
+     * @throws RestClientException APIアクセスで200以外が返ってきた場合にthrowする
+     */
+    public boolean sendMetric(String serviceName, MetricForm... metrics) {
+        List<ServiceMetric> serviceMetrics = Arrays.stream(metrics)
+                .map(metric -> new ServiceMetric(metric.getMetricName(), new Date(), metric.getMetricValue()))
+                .collect(Collectors.toList());
+
+        String url = String.format("/services/%s/tsdb", serviceName);
+        HttpEntity<List<ServiceMetric>> request = new HttpEntity<>(serviceMetrics, mackerelApiHeaders());
+        ResponseEntity<PostResult> response = restOperations.exchange(url, HttpMethod.POST, request, PostResult.class);
+        return response.getBody().getSuccess();
+    }
+
     private HttpHeaders mackerelApiHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Api-Key", this.mackerelSettings.getApiKey());
-        headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
         return headers;
     }
 

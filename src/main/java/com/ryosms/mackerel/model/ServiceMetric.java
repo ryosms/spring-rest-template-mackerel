@@ -11,11 +11,19 @@ import java.util.Date;
  */
 @Data
 public class ServiceMetric {
+
+    public ServiceMetric(String name, Date date, double value) {
+        setName(name);
+        setTime(date);
+        setValue(value);
+    }
+
     private String name;
     private long time;
     private double value;
 
     private void setTime(Date date) {
-        this.time = date.getTime();
+        this.time = Math.floorDiv(date.getTime(), 1000L);
+
     }
 }

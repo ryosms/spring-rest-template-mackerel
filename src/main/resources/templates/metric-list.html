@@ -5,11 +5,6 @@
     <title>Metric List</title>
     <link href="../static/css/jagrid.css" th:href="@{/css/jagrid.css}" rel="stylesheet"/>
     <script src="../static/js/jagrid.js" th:src="@{/js/jagrid.js}"></script>
-    <style>
-        .inline {
-            display: inline;
-        }
-    </style>
 </head>
 <body>
 <!--/*@thymesVar id="metricNames" type="com.ryosms.mackerel.model.MetricNames"*/-->
@@ -22,14 +17,15 @@
 
     <h2 data-x="1" data-y="4">Metric投稿</h2>
 
-    <form th:action="@{|/services/${serviceName}|}" method="post" data-x="1" data-y="5">
+    <!--/*@thymesVar id="metricForm" type="com.ryosms.mackerel.form.MetricForm"*/-->
+    <form th:action="@{|/services/${serviceName}|}" method="post" data-x="1" data-y="5" th:object="${metricForm}">
         <div data-x="1" data-y="5">
             <label for="metricName">Metric Name</label>
-            <input type="text" name="metricName" id="metricName"/>
+            <input type="text" id="metricName" th:field="*{metricName}"/>
         </div>
         <div data-x="1" data-y="7">
             <label for="metricValue">Metric Value</label>
-            <input type="number" name="metricValue" id="metricValue"/>
+            <input type="number" id="metricValue" th:field="*{metricValue}"/>
         </div>
         <div data-x="1" data-y="9">
             <input type="submit" value="投稿する"/>
