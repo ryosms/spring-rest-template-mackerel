@@ -3,19 +3,44 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Metric List</title>
+    <link href="../static/css/jagrid.css" th:href="@{/css/jagrid.css}" rel="stylesheet"/>
+    <script src="../static/js/jagrid.js" th:src="@{/js/jagrid.js}"></script>
+    <style>
+        .inline {
+            display: inline;
+        }
+    </style>
 </head>
 <body>
-<h1 th:inline="text">Metric List([[${serviceName}]])</h1>
-
 <!--/*@thymesVar id="metricNames" type="com.ryosms.mackerel.model.MetricNames"*/-->
 <!--/*@thymesVar id="names" type="java.util.List<String>"*/-->
-<ul>
-    <li th:if="${#lists.isEmpty(metricNames.names)}">ないです</li>
-    <li th:each="name:${metricNames.names}" th:inline="text">
-        [[${name}]]
-    </li>
-</ul>
+<!--/*@thymesVar id="serviceName" type="java.lang.String"*/-->
+<div class="jagrid" style="min-height: 400px;" th:inline="text">
+    <a th:href="@{/}" data-x="0" data-y="0">戻る</a>
 
+    <h1 class="jg-header" data-x="1" data-y="2">[[${serviceName}]]</h1>
+
+    <h2 data-x="1" data-y="4">Metric投稿</h2>
+
+    <form th:action="@{|/services/${serviceName}|}" method="post" data-x="1" data-y="5">
+        <div data-x="1" data-y="5">
+            <label for="metricName">Metric Name</label>
+            <input type="text" name="metricName" id="metricName"/>
+        </div>
+        <div data-x="1" data-y="7">
+            <label for="metricValue">Metric Value</label>
+            <input type="number" name="metricValue" id="metricValue"/>
+        </div>
+        <div data-x="1" data-y="9">
+            <input type="submit" value="投稿する"/>
+        </div>
+    </form>
+
+    <h2 data-x="1" data-y="11">Metric一覧</h2>
+    <ul data-x="1" data-y="12">
+        <li th:each="name:${metricNames.names}">[[${name}]]</li>
+    </ul>
+</div>
 
 </body>
 </html>
