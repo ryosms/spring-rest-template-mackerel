@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="jp" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Metric List</title>
+</head>
+<body>
+<h1 th:inline="text">Metric List([[${serviceName}]])</h1>
+
+<!--/*@thymesVar id="metricNames" type="com.ryosms.mackerel.model.MetricNames"*/-->
+<!--/*@thymesVar id="names" type="java.util.List<String>"*/-->
+<ul>
+    <li th:if="${#lists.isEmpty(metricNames.names)}">ないです</li>
+    <li th:each="name:${metricNames.names}" th:inline="text">
+        [[${name}]]
+    </li>
+</ul>
+
+
+</body>
+</html>
