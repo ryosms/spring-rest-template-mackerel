@@ -20,6 +20,7 @@ public class MackerelController {
 
     @RequestMapping("/")
     public String serviceList(Model model) {
+        model.addAttribute("organization", mackerelService.loadOrganizationName());
         model.addAttribute("serviceList", mackerelService.loadServiceList());
 
         return "service-list";
@@ -27,6 +28,7 @@ public class MackerelController {
 
     @RequestMapping(value = "/services/{serviceName}", method = RequestMethod.GET)
     public String metricList(@PathVariable String serviceName, @ModelAttribute MetricForm form, Model model) {
+        model.addAttribute("organization", mackerelService.loadOrganizationName());
         model.addAttribute("serviceName", serviceName);
         model.addAttribute("metricNames", mackerelService.loadMetricList(serviceName));
 
@@ -39,6 +41,7 @@ public class MackerelController {
                              BindingResult result,
                              Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("organization", mackerelService.loadOrganizationName());
             model.addAttribute("serviceName", serviceName);
             model.addAttribute("metricNames", mackerelService.loadMetricList(serviceName));
             return "metric-list";

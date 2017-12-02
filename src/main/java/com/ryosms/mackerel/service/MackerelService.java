@@ -2,10 +2,7 @@ package com.ryosms.mackerel.service;
 
 import com.ryosms.mackerel.MackerelSettings;
 import com.ryosms.mackerel.form.MetricForm;
-import com.ryosms.mackerel.model.MetricNames;
-import com.ryosms.mackerel.model.PostResult;
-import com.ryosms.mackerel.model.ServiceList;
-import com.ryosms.mackerel.model.ServiceMetric;
+import com.ryosms.mackerel.model.*;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -31,7 +28,16 @@ public class MackerelService {
     }
 
     /**
-     * Mackerelに登録されているServiceの一覧を返す
+     * Organization名を取得する
+     */
+    public Organization loadOrganizationName() {
+        HttpEntity<?> entity = new HttpEntity<>(mackerelApiHeaders());
+        ResponseEntity<Organization> response = restOperations.exchange("/org", HttpMethod.GET, entity, Organization.class);
+        return response.getBody();
+    }
+
+    /**
+     * Organizationに登録されているServiceの一覧を返す
      *
      * @throws RestClientException APIアクセスで200以外が返ってきた場合にthrowする
      */
