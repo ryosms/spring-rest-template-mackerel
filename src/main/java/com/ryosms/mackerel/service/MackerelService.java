@@ -72,8 +72,8 @@ public class MackerelService {
 
         String url = String.format("/services/%s/tsdb", serviceName);
         HttpEntity<List<ServiceMetric>> request = new HttpEntity<>(serviceMetrics, mackerelApiHeaders());
-        ResponseEntity<PostResult> response = restOperations.exchange(url, HttpMethod.POST, request, PostResult.class);
-        return response.getBody().getSuccess();
+        PostResult response = restOperations.postForObject(url, request, PostResult.class);
+        return response.getSuccess();
     }
 
     private HttpHeaders mackerelApiHeaders() {
